@@ -1,0 +1,12 @@
+.pytest_cache
+.pbynb_checkpoints
+**/*.ipynb
+cache
+**/__pycache__/*.*
+dist
+index
+api_dict.json
+app_dict.json
+market
+.ipynb_checkpoints
+data
