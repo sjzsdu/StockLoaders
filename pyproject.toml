@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "astock-loaders"
-version = "0.1.4"
+version = "0.1.5"
 description = "A股市场分析提供强大的训练和测试数据集，支持大型模型开发。它生成适用于金融数据处理的Keras数据加载器，简化数据准备过程，使分析师和数据科学家专注于模型开发。功能包括数据标准化、增强和批处理，是在A股市场领域利用深度学习技术的必备工具。"
 authors = ["sunjuzhong <129019668+sunjuzhong@users.noreply.github.com>"]
 readme = "README.md"

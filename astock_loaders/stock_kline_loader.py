@@ -44,7 +44,11 @@ class StockKlineLoader(StockBaseLoader):
 
         # 计算涨幅百分比
         pre_price = x_df.iloc[-1]['收盘']
-        price_change_percentage = ((y_df['收盘'].mean() - pre_price) / pre_price) * 100
+        # 检查 pre_price 是否为零
+        if pre_price == 0:
+            price_change_percentage = y_df['收盘'].mean() * 100
+        else:
+            price_change_percentage = ((y_df['收盘'].mean() - pre_price) / pre_price) * 100
 
         intervals = self.intervals
         result = np.zeros(5)  # 创建一个零数组来存类别概率
