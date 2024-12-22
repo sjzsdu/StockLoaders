@@ -79,6 +79,6 @@ class StockKlineLoader(StockBaseLoader):
         img_array = np.array(img)
         # plt.show()
         plt.close(fig)
-        return img_array
+        return img_array / 255.0
 
     
