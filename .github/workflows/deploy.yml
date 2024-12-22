@@ -1,0 +1,42 @@
+name: Publish Python Package
+
+on:
+  push:
+    branches:
+      - master  # 选择你要在推送时触发的分支
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'  # 使用的 Python 版本
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python -
+
+      - name: Configure Poetry
+        run: |
+          poetry config virtualenvs.create false
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Update version
+        run: |
+          poetry version patch  # 或者使用 `minor` 或 `major` 来更新版本号
+
+      - name: Publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          poetry publish --build
+
