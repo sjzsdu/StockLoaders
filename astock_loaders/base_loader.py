@@ -53,8 +53,10 @@ class BaseLoader:
         return DataLoader(dataset=test_dataset, batch_size=self.batch_size, shuffle=False, num_workers = 4)
     
     def get_recent_data(self):
+        if not hasattr(self, 'data'):
+            self.format_data()
         idx = len(self.data) - self.sequence_length
-        x_df = self.cal_features_labels(idx, self.data.iloc[idx], self.data)
+        x_df, _ = self.cal_features_labels(idx, self.data.iloc[idx], self.data)
         return np.array(x_df, dtype=np.float32)
         
     
