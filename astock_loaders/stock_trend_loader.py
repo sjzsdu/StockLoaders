@@ -34,3 +34,4 @@ class StockTrendLoader(StockBaseLoader):
         return x_df, y_df
     
     
+    

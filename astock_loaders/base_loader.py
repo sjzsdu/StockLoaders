@@ -22,6 +22,18 @@ class BaseLoader:
         """
         raise NotImplementedError("Subclasses must implement the cal_features method.")
     
+    def feature_shape(self,):
+        if not hasattr(self, 'data'):
+            self.format_data()
+        x_df, _ = self.cal_features_labels(0, self.data.iloc[0], self.data)
+        return x_df.shape
+    
+    def label_shape(self,):
+        if not hasattr(self, 'data'):
+            self.format_data()
+        _, y_df = self.cal_features_labels(0, self.data.iloc[0], self.data)
+        return y_df.shape
+    
     def create_sequences(self):
         if not hasattr(self, 'data'):
             self.format_data()

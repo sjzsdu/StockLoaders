@@ -5,11 +5,15 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
 from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
 
-
+UP_COLOR= 'lightgrey'
+DOWN_COLOR = 'black'
 class StockKlineLoader(StockBaseLoader):
-    def __init__(self, symbol, show_chart = False, figsize=(3, 3), categtory_nums = None, **kwargs):
+    def __init__(self, symbol, show_chart = False, show_volume = False, figsize=(3, 3), categtory_nums = None, **kwargs):
         self.show_chart = show_chart
+        self.show_volume = show_volume
         self.figsize = figsize
         if categtory_nums is None:
             categtory_nums = (5, 2, -2, -5)
@@ -67,8 +71,6 @@ class StockKlineLoader(StockBaseLoader):
         img_array = self.generate_kline_image(x_df)
         return img_array, result
 
-
-    
     def generate_kline_image(self, df):
         # 确保索引为 DatetimeIndex
         df.index = pd.to_datetime(df['日期'])
@@ -80,16 +82,28 @@ class StockKlineLoader(StockBaseLoader):
             '成交量': 'Volume'
         }, inplace=True)
 
-
-        mc = mpf.make_marketcolors(up='red', down='green', inherit=True)
+        mc = mpf.make_marketcolors(up=UP_COLOR, down=DOWN_COLOR, inherit=True)
         s = mpf.make_mpf_style(marketcolors=mc, base_mpf_style='yahoo')
         
-        fig, ax = plt.subplots(figsize=self.figsize)
+        fig, axes = mpf.plot(df, type='candle', volume=self.show_volume, 
+            style=s, figsize=self.figsize, returnfig=True)
         
-        try:
-            mpf.plot(df, type='candle', ax=ax, show_nontrading=False, style=s)
-        except Exception as e:
-            print("Error plotting the chart:", e)  # 捕获并打印错误信息
+        # Customizing the volume bars width and color
+
+        if self.show_volume:
+            volume_ax = axes[2]  
+            for idx, bar in enumerate(volume_ax.patches):
+                bar.set_width(0.5)  # Set custom width for each volume bar
+                if df['Close'].iloc[idx] > df['Open'].iloc[idx]:
+                    bar.set_color(UP_COLOR)
+                else:
+                    bar.set_color(DOWN_COLOR)
+        for ax in axes:
+            ax.grid(False)
+            ax.set_xticks([])
+            ax.set_yticks([]) 
+            ax.set_xlabel('')
+            ax.set_ylabel('')
 
         buf = BytesIO()
         plt.axis('off')
@@ -97,10 +111,27 @@ class StockKlineLoader(StockBaseLoader):
         buf.seek(0)
         
         img = Image.open(buf)
+
+        # 将图像转换为灰度图
+        img = img.convert('L')  # 'L' 模式表示灰度图
         img_array = np.array(img)
+        
         if self.show_chart:
             plt.show()
         plt.close(fig)
+
+        # 归一化图像数据
         return img_array / 255.0
+
+
+    def draw_recent(self):
+        data = self.get_recent_data()
+        # 显示灰度图
+        plt.imshow(data, cmap='gray', aspect='auto')
+        plt.colorbar()  # 添加颜色条
+        plt.title('Gray Scale Image')
+        plt.axis('off')  # 关闭坐标轴
+        plt.show()  # 显示图像
+
 
     
