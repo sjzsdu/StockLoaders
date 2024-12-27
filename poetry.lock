@@ -191,13 +191,13 @@ files = [
 
 [[package]]
 name = "china-stock-data"
-version = "0.1.5"
+version = "0.1.6"
 description = ""
 optional = false
-python-versions = "<4.0,>=3.12"
+python-versions = "<4.0,>=3.10"
 files = [
-    {file = "china_stock_data-0.1.5-py3-none-any.whl", hash = "sha256:c97c785ca7e9f3edbce665a3bfec9934521507e0bd756dbba016984e87bcbfb2"},
-    {file = "china_stock_data-0.1.5.tar.gz", hash = "sha256:14fdc687b6157b0d49e74105a6caffefadd0f48a9ae86242fd03ef5dffbda32a"},
+    {file = "china_stock_data-0.1.6-py3-none-any.whl", hash = "sha256:1451833ef815b5f7681f38cfa1ea472566d2644dc5a1f51f06832c6ae50196c2"},
+    {file = "china_stock_data-0.1.6.tar.gz", hash = "sha256:f4f8407382dfcfcd6517d25246c427a94a355fc6c463074ce44d4a4c86891fde"},
 ]
 
 [package.dependencies]
@@ -1294,7 +1294,11 @@ files = [
 ]
 
 [package.dependencies]
-numpy = {version = ">=1.26.0", markers = "python_version >= \"3.12\""}
+numpy = [
+    {version = ">=1.22.4", markers = "python_version < \"3.11\""},
+    {version = ">=1.23.2", markers = "python_version == \"3.11\""},
+    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
+]
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
 tzdata = ">=2022.7"
@@ -1840,5 +1844,5 @@ test = ["pytest", "pytest-cov"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.12"
-content-hash = "bc0821e39f4ccab38eb782dd445020b4e19d6f8d05e261ba46a31b3dc69ac491"
+python-versions = "^3.10"
+content-hash = "dc5e1a89fe9472891a31fc1d642c48cb45da35cc28c13b370c3c8989a4c233b0"

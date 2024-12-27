@@ -6,8 +6,8 @@ authors = ["sunjuzhong <129019668+sunjuzhong@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-china-stock-data = "^0.1.5"
+python = "^3.10"
+china-stock-data = "^0.1.6"
 scikit-learn = "^1.6.0"
 torch = "^2.5.1"
 matplotlib = "^3.10.0"

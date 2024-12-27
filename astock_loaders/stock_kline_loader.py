@@ -87,9 +87,8 @@ class StockKlineLoader(StockBaseLoader):
         
         fig, axes = mpf.plot(df, type='candle', volume=self.show_volume, 
             style=s, figsize=self.figsize, returnfig=True)
-        
-        # Customizing the volume bars width and color
 
+        # Customizing the volume bars width and color
         if self.show_volume:
             volume_ax = axes[2]  
             for idx, bar in enumerate(volume_ax.patches):
@@ -98,6 +97,8 @@ class StockKlineLoader(StockBaseLoader):
                     bar.set_color(UP_COLOR)
                 else:
                     bar.set_color(DOWN_COLOR)
+
+        # 去掉网格线和坐标轴刻度
         for ax in axes:
             ax.grid(False)
             ax.set_xticks([])
@@ -105,9 +106,13 @@ class StockKlineLoader(StockBaseLoader):
             ax.set_xlabel('')
             ax.set_ylabel('')
 
+        # 调整边距
+        plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
+
+        # 使用 bbox_inches='tight' 去掉边距
         buf = BytesIO()
         plt.axis('off')
-        plt.savefig(buf, format='png', bbox_inches='tight', pad_inches=0.5)
+        plt.savefig(buf, format='png', bbox_inches='tight', pad_inches=0)
         buf.seek(0)
         
         img = Image.open(buf)
@@ -122,7 +127,6 @@ class StockKlineLoader(StockBaseLoader):
 
         # 归一化图像数据
         return img_array / 255.0
-
 
     def draw_recent(self):
         data = self.get_recent_data()
